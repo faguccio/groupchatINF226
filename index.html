@@ -118,6 +118,7 @@
 </body>
 <script>
     var reqId = 0;
+    var shownMessages = [];
     var anchor = document.getElementById('anchor');
     var searchField = document.getElementById('search');
     var recipientsField = document.getElementById('recipients');
@@ -130,12 +131,29 @@
     var header = document.getElementById('header');
     var errorOutput = document.getElementById('wrongQueryMessage')
 
+
+    
+    var intervalID = setInterval(async function() {
+        res = await fetch("messages/myids");
+        content = await res.json();
+        
+        if (content.length > shownMessages.length) {
+            
+            for (i = shownMessages.length; i < content.length; i++) {
+                shownMessages.push(content[i])
+                search(content[i]);
+            }
+        }
+    }, 1000);
+
     
     var search = async (query) => {
         const id = reqId++;
         let q;
         if (query == '#all') {
+            shownMessages = content
             q = `/messages`;
+            output.innerHTML="";
         } else {
             q= `/messages/ID?q=${encodeURIComponent(query)}`;
         }
@@ -143,6 +161,7 @@
         
         console.log(res);
         content = await res.text();
+
         if (content[0] == "!") {
             console.log("SIOFBA")
             errorOutput.innerHTML = content.slice(1)
@@ -161,17 +180,8 @@
         const q = `/new?recipients=${encodeURIComponent(recipients)}&message=${encodeURIComponent(message)}&replyId=${encodeURIComponent(replyId)}`;
         res = await fetch(q, { method: 'post' });
         console.log(res);
-        /*
-        const head = document.createElement('h3');
-        head.textContent = `[${id}]  ${q} → ${res.status} ${res.statusText}`;
-        output.appendChild(head);
-        */
-        const body = document.createElement('p');
-        body.innerHTML = await res.text();
-        output.appendChild(body);
-        body.scrollIntoView({block: "end", inline: "nearest", behavior: "smooth"});
-        anchor.scrollIntoView();
     };
+
 
 
     searchField.addEventListener('keydown', ev => {

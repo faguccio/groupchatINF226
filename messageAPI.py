@@ -28,6 +28,12 @@ def index():
 
 
 
+@app.get("/messages/myids")
+@gb.login_required
+def get_my_ids():
+    user = flask.session['username']
+    ids = utils.fetch_myids(user)
+    return ids
 
 @app.get("/messages")
 @gb.login_required

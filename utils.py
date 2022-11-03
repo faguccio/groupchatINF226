@@ -179,3 +179,18 @@ def format_messages_html(messages):
         output += f"<h3> {message[0]} </h3> {message[1]} <p></p>"
     return output
 
+
+def fetch_myids(user):
+    stmt = f"SELECT id FROM messages WHERE recipients=? or recipients='#all' or sender=?"
+    try:
+        c = gb.conn.execute(stmt, (user, user))
+        rows = c.fetchall()
+        rows = [x[0] for x in rows]
+        print(f"The result of searching all: {rows}")
+        c.close()
+        return rows
+    except Error as e:
+        print (e)
+        return (f'ERROR: {e}', 500)
+
+
