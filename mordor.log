@@ -218,3 +218,17 @@ INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:25:49] "[32mPOST /login HTTP/1.1[0
 INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:25:49] "GET /index.html HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:25:49] "GET /highlight.css HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:25:52] "GET /messages HTTP/1.1" 200 -
+INFO:root:Server started at 1667468124.6859825
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:28] "[32mGET /index.html HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:28] "GET /login?next=%2Findex.html HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:28] "GET /highlight.css HTTP/1.1" 200 -
+INFO:root:User: anya is logging IN
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:30] "[32mPOST /login?next=%2Findex.html HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:30] "GET /index.html HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:30] "GET /highlight.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:31] "GET /messages HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:36] "GET /messages/ID?q=15 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [03/Nov/2022 10:35:41] "GET /messages/ID?q=1 HTTP/1.1" 200 -
