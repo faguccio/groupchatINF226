@@ -4,6 +4,8 @@
 
 # Documentation
 
+> For this project it's assumed connection over https.
+
 ## Design choices
 
 This application is implemented through *flask* and *sqlite*, directly following from the [excercise](https://git.app.uib.no/inf226/22h/login-server).  
@@ -192,17 +194,26 @@ Given the target audience of this application, there are no limits the amount of
 The main [attack vectors](https://www.upguard.com/blog/attack-vector) taken in cosidaration for this application are:
 
 - Database query injection (*SQL injections*)
-    - I used prepared statments (for message content) and whitelisting (for username and id)
+    - I used prepared statments, so the queries are not done simply concatenating strings
 - Cross Site Sripting
-    - the message content is filtered and dangerous character are substituted
+    - When the server recieve messages, the content is filtered and dangerous character are substituted. It's therefore safe sending back retrieved content from the database.
 - Cross Site request forgery (Session Hijacking)
     - `flask_login` provide a `csrf_token` to protect against those attacks (and handles all the authorization part)
+- Inseccure redirection:
+    - The redirection links are checked to be on the same network as the server
 - Server Side request forgery
     - possible `routes` are defined, so the user cannot access unintended resources
 - Compromised Credentials
     - passwords are stored hashed and salted, so even if the database it's compromised credentials cannot be stolen
 - Weak Credential
-    - during registration, the user is rquired to provide strong enough keys
+    - during registration, the user is required to provide strong enough passwords. That lower gratly the possibility of password guessing.
+
+Also some other general extra touches:
+
+- username are whitelisted, therefore can be trusted.
+- for random number generation (useful for `flask.secret` and generating `salt` for hashes) `os.urandom` it's used, and it's considered very secure
+- for hashing, a wrapper of SHA3 256 it's used, which is considere highly secure
+
 
 ## What is the access control model?
 
@@ -213,4 +224,12 @@ In this system, the **access control model** it's straightforward. A user can
     - when performing the retrieveng query, the `sender` and `recipients` field are controlled accordingly
 
 ## How can you know that you security is good enough? (traceability)
+
+In order to discover possible security breaches, a logging system it's implemented. The file it's called `mordor.log`, and it stores:
+- logged in/out users
+- all the `http` requests
+- the results of the queries that are done.
+
+In this way, we have a very good understanding on the 
+
 

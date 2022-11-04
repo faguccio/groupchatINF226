@@ -159,14 +159,11 @@
         }
         res = await fetch(q);
         
-        console.log(res);
         content = await res.text();
 
         if (content[0] == "!") {
-            console.log("SIOFBA")
             errorOutput.innerHTML = content.slice(1)
         } else {
-            console.log(content)
             const body = document.createElement('div');
             body.innerHTML = content;
             output.appendChild(body);
@@ -174,14 +171,17 @@
             anchor.scrollIntoView();
         }
     };
-    
+
+
     var newMess = async (recipients, message, replyId) => {
         const id = reqId++;
         const q = `/new?recipients=${encodeURIComponent(recipients)}&message=${encodeURIComponent(message)}&replyId=${encodeURIComponent(replyId)}`;
         res = await fetch(q, { method: 'post' });
-        console.log(res);
+        result = await res.text();
+        if (result[0] == "!") {
+            errorOutput.innerHTML = result.slice(1)
+        }
     };
-
 
 
     searchField.addEventListener('keydown', ev => {
@@ -189,6 +189,8 @@
             search(searchField.value);
         }
     });
+
+
     searchBtn.addEventListener('click', () => search(searchField.value));
     allBtn.addEventListener('click', () => search('#all'));
     sendBtn.addEventListener('click', () => newMess(recipientsField.value, messageField.value, replyField.value));

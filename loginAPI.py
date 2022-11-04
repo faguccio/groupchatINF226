@@ -13,7 +13,7 @@ from apsw import Error
 @gb.login_manager.user_loader
 def user_loader(user_id):
     if not utils.is_username_taken(user_id):
-        print(f"Somebody tried to login a non existent user")
+        gb.logging.info(f"Somebody tried to login a non existent user")
         return 
 
     user = utils.User()
@@ -27,8 +27,7 @@ def login():
     message=""
     form = login_form.LoginForm()
     if form.is_submitted():
-        print(f'Received form: {"invalid" if not form.validate() else "valid"} {form.form_errors} {form.errors}')
-        print(flask.request.form)
+        gb.logging.info(f'Received form: {"invalid" if not form.validate() else "valid"} {form.form_errors} {form.errors}')
 
     if form.validate_on_submit():
         username = form.username.data
@@ -42,7 +41,6 @@ def login():
             login_user(user)
             flask.session['username'] = user.id
             gb.logging.info(f"User: {flask.session['username']} is logging IN")
-            print(flask.session)
 
             flask.flash('Logged in successfully.')
             next = flask.request.args.get('next')
@@ -70,8 +68,7 @@ def register():
     message=""
     form = login_form.LoginForm()
     if form.is_submitted():
-        print(f'Received form: {"invalid" if not form.validate() else "valid"} {form.form_errors} {form.errors}')
-        #print(flask.request.form)
+        gb.logging.info(f'Received form: {"invalid" if not form.validate() else "valid"} {form.form_errors} {form.errors}')
 
     if form.validate_on_submit():
         username = form.username.data

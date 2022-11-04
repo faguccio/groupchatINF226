@@ -46,7 +46,6 @@ def get_messages():
     output = []
 
     for mess in messages:
-        print(mess)
         output.append(utils.format_message(mess))
 
     return utils.format_messages_html(output)
@@ -68,7 +67,6 @@ def get_message_from_id():
     if len(message) > 1:
         return f"!Something really bad happend"
     
-    print(message[0])
     return utils.format_messages_html([utils.format_message(message[0])])
     
 
@@ -77,7 +75,6 @@ def get_message_from_id():
 def new_message():
     # I wish I could use the UNIX epoch as a timestamp but it's probably too hardcore
     timestamp = datetime.datetime.now().__str__()
-    print(flask.session)
     username = flask.session['username']
     # test if it works removing the form.get (javascript should do a fetch but i dunno)
     message = flask.request.args.get('message') or flask.request.form.get('message')
@@ -90,15 +87,18 @@ def new_message():
         try:
             replyId = int(replyId)
         except:
-            return f"Invalid reply ID"
+            return f"!Invalid reply ID"
 
     recipients = flask.request.args.get('recipients') or flask.request.form.get('recipients')
+
+    if message is None or recipients is None:
+        return f"!Error, missing a field"
+
+
     # recipients can by either a username or #all (which is not a valid username)
     if recipients != gb.ALL_address and ( not utils.is_username_valid(recipients) or not utils.is_username_taken(recipients)):
-            return f"Invalid recivier (it doesn't exists)"
-    
-    if not username or not message or not recipients:
-        return f"Error, missing a field"
+            return f"!Invalid recivier (it doesn't exists)" 
+
     
     return utils.insert_message(username, timestamp, message, replyId, recipients)
 
