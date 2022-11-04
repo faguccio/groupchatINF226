@@ -230,6 +230,7 @@ In order to discover possible security breaches, a logging system it's implement
 - all the `http` requests
 - the results of the queries that are done.
 
-In this way, we have a very good understanding on the 
+In this way, we have a very good understanding on the flow requests, and we can even restrict potential security breaches to users logged in at the moment.
+> TO be honest I had a difficult time deciding on the logging system. With the experience from this project I think a much better work can be done.
 
 
